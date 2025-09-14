@@ -1,0 +1,35 @@
+name: SSIS CI Example (Demo)
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  demo-job:
+    runs-on: ubuntu-latest
+
+    services:
+      db:
+        image: postgres:15
+        env:
+          POSTGRES_USER: testuser
+          POSTGRES_PASSWORD: testpass
+          POSTGRES_DB: test
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U testuser"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Build SSIS project
+        run: echo "Building MyProject.dtproj (placeholder)"
+
+      - name: Run SSIS package
+        run: echo "Running MyPackage.dtsx against test DB (placeholder)"
